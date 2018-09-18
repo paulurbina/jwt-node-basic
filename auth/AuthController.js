@@ -10,6 +10,9 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var config = require('../config');
 
+//middlewares
+var VerifyToken = require('./VerifyToken');
+
 router.post('/register', function(req, res) {
 	var hashedPassword = bcrypt.hashSync(req.body.password,8);
 
@@ -31,8 +34,6 @@ router.post('/register', function(req, res) {
 		 res.status(200).send({ auth: true, token: token });
 	});
 });
-
-
 
 router.get('/me', function(req, res) {
 	var token = req.headers['x-access-token'];
@@ -59,6 +60,7 @@ router.get('/me', function(req, res) {
 
 	});
 })
+
 
 router.post('/login', function(req, res) {
 	User.findOne(
